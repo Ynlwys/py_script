@@ -168,6 +168,7 @@ secendWidth_col = newTable.col(1);
 firstWidth_col.width = 256 * 20;
 secendWidth_col.width = 256 * 20;
 
+
 # 设置列的单元格格式。
 
 #设置表头。

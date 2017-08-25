@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+    author：Ynlwys
+
+
+"""
+
 import sys
 import nmap
 
