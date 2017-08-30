@@ -1,0 +1,8 @@
+## 安装nginx，安装服务器的主机列表信息，elk - 配置于ansible，远程用户root。
+---
+- name: Install Nginx
+  hosts: elk
+  remote_user: root
+
+  roles:
+    - nginx
