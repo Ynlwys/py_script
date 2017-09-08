@@ -1,0 +1,79 @@
+# 首先需要进行判断是一个包几个包还是多个包
+# 根据包判断需要进行停止的tomcat服务
+# 根据停止的服务器判断需要进行备份的包
+# 根据包和服务器名称进行包的复制
+# 根据停止的服务器进行服务的启动
+
+
+### 前置需求
+
+# 需要创建 /etc/init.d/tomcat 启动服务
+#
+# 需要创建 /usr/sbin/tomcat_ctl 控制客户端
+
+
+---
+
+  - name: Tomcat-Webapps-Deploy
+    hosts: tomcat-all
+    remote_user: root
+
+  - name: tomcat-service-stop
+    hosts: tomcat-all
+    tasks:
+      - shell: tomcat_ctl stop
+
+  - name: tomcat-warAndDir-bakup
+    hosts: tomcat-all
+    tasks:
+      - shell: tomcat_ctl bakup
+
+
+  - name: web-war-copy
+    hosts: tomcat-web
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/testweb.war dest=/opt/tomcat/webapps/testweb.war owner=somp group=somp mode=755
+
+  - name: end-war-copy
+    hosts: tomcat-web
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/testend.war dest=/opt/tomcat_end/webapps/testend.war owner=somp group=somp mode=755
+
+  - name: cp-war-copy
+    hosts: tomcat-ms
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/testcp.war dest=/opt/tomcat_cp/webapps/testcp.war owner=somp group=somp mode=755
+
+  - name: ms-war-copy
+    hosts: tomcat-ms
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/testms.war dest=/opt/tomcat/webapps/testms.war owner=somp group=somp mode=755
+
+  - name: test-war-copy
+    hosts: tomcat-api
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/test.war dest=/opt/tomcat_test/webapps/test.war owner=somp group=somp mode=755
+
+  - name: api-war-copy
+    hosts: tomcat-api
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/testapi.war dest=/opt/tomcat/webapps/testapi.war owner=somp group=somp mode=755
+
+
+  - name: tomcat-service-start
+    hosts: tomcat-all
+    remote_user: root
+    tasks:
+      - command: echo hellp
+        notify: restart tomcat
+
+    handlers:
+      - name: restart tomcat
+        service: name=tomcat state=restarted enabled=yes
+
