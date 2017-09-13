@@ -1,0 +1,34 @@
+---
+
+  - name: Tomcat-Webapps-Deploy-msANDcp
+    hosts: tomcat-ms
+    remote_user: root
+
+  - name: tomcat-service-stop
+    hosts: tomcat-ms
+    tasks:
+      - shell: tomcat_ctl stop
+
+  - name: tomcat-warAndDir-bakup
+    hosts: tomcat-ms
+    tasks:
+      - shell: tomcat_ctl bakup
+
+  - name: cp-war-copy
+    hosts: tomcat-ms
+    remote_user: root
+    tasks:
+      - copy: src=testcp.war dest=/opt/tomcat_cp/webapps/testcp.war owner=somp group=somp mode=755
+
+  - name: ms-war-copy
+    hosts: tomcat-ms
+    remote_user: root
+    tasks:
+      - copy: src=testms.war dest=/opt/tomcat/webapps/testms.war owner=somp group=somp mode=755
+
+  - name: tomcat-service-start
+      hosts: tomcat-ms
+      remote_user: root
+      tasks:
+        - command: echo hello
+          notify: restart tomcat

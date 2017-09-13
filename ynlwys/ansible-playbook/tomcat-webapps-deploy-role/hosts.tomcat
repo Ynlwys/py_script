@@ -1,0 +1,13 @@
+[tomcat-all:children]
+tomcat-web
+tomcat-ms
+tomcat-api
+
+[tomcat-web]
+10.4.64.94
+
+[tomcat-ms]
+10.4.64.96
+
+[tomcat-api]
+10.4.64.100

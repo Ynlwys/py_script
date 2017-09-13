@@ -1,0 +1,32 @@
+#!/bin/bash
+# description: Tomcat7 Start Stop Restart
+# processname: tomcat7
+# 执行用户为somp
+# chkconfig: 234 20 80
+
+
+# 环境变量需要根据自己jdk的安装位置进行配置
+
+JAVA_HOME=/opt/jdk
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export JAVA_HOME JRE_HOME CLASSPATH PATH
+
+# 根据自己安装tomcat的位置进行配置
+CATALINA_HOME=/opt/tomcat
+#CATALINA_HOME_END=/opt/tomcat_end - 如果多个tomcat可以通过如此进行批量控制 但不建议如此 耦合性太高
+
+case $1 in
+start)
+su - somp -c "sh $CATALINA_HOME/bin/startup.sh"
+;;
+stop)
+su - somp -c "sh $CATALINA_HOME/bin/shutdown.sh"
+;;
+restart)
+su - somp -c "sh $CATALINA_HOME/bin/shutdown.sh"
+su - somp -c "sh $CATALINA_HOME/bin/startup.sh"
+;;
+esac
+exit 0

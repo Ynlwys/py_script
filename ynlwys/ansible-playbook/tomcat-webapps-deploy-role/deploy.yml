@@ -1,0 +1,9 @@
+---
+- name: Deploy Tomcat - [web、end、ms、cp、api、test].war
+  hosts: all
+  remote_user: root
+
+  roles:
+    - apiANDtest
+    - msANDcp
+    - webANDend
