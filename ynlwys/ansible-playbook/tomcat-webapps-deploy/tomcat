@@ -4,6 +4,11 @@
 # 执行用户为somp
 # chkconfig: 234 20 80
 
+# 获取系统当前时间并设置为变量
+DATE=`date +%Y%m%d-%H%M%S`
+
+# 获取当前tomcat进程
+TPID=`ps aux|grep tomcat|grep Xms|grep tomcat/bin|awk  '{print $2}'`
 
 # 环境变量需要根据自己jdk的安装位置进行配置
 
@@ -22,11 +27,14 @@ start)
 su - somp -c "sh $CATALINA_HOME/bin/startup.sh"
 ;;
 stop)
-su - somp -c "sh $CATALINA_HOME/bin/shutdown.sh"
+kill -9 $TPID  && echo "tomcat shutdown OK"
 ;;
 restart)
-su - somp -c "sh $CATALINA_HOME/bin/shutdown.sh"
+kill -9 $TPID  && echo "tomcat shutdown OK"
 su - somp -c "sh $CATALINA_HOME/bin/startup.sh"
+;;
+backup)
+mkdir -p /data/script/tomcat/$DATE && cp -r /opt/tomcat/webapps/* /data/script/tomcat/$DATE
 ;;
 esac
 exit 0
