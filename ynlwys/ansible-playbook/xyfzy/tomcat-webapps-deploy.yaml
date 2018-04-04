@@ -1,0 +1,42 @@
+# 首先需要进行判断是一个包几个包还是多个包
+# 根据包判断需要进行停止的tomcat服务
+# 根据停止的服务器判断需要进行备份的包
+# 根据包和服务器名称进行包的复制
+# 根据停止的服务器进行服务的启动
+
+
+
+---
+
+  - name: Tomcat-Webapps-Deploy
+    hosts: h5-all
+    remote_user: root
+
+  - name: tomcat-service-stop
+    hosts: h5-all
+    tasks:
+      - shell: tomcat_ctl stop
+
+  - name: tomcat-warAndDir-bakup
+    hosts: h5-all
+    tasks:
+      - shell: tomcat_ctl bakup
+
+  - name: tomcat-warAndDirRemove
+    hosts: h5-all
+    tasks:
+      - shell: 'rm -rf /opt/tomcat/webapps/ROOT*'
+
+
+  - name: h5-war-copy
+    hosts: h5-all
+    remote_user: root
+    tasks:
+      - copy: src=/data/script/h5/ROOT.war dest=/opt/apache-tomcat-8.0.46/webapps/ROOT.war owner=root group=root mode=755
+
+
+  - name: tomcat-start
+    hosts: h5-all
+    tasks:
+      - shell: tomcat-h5_ctl start
+
