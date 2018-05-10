@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*
-# 处理Excel的包
 
 """
     author：Ynlwys
@@ -28,6 +27,7 @@ def judgmentCPUstate(v):
 
     if cpuUsed < 20:
         print "CPU 使用过低"
+
         onTakeUpCPU();
 
     print vNum[2];
